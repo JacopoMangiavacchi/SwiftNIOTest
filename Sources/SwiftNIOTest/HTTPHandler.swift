@@ -37,7 +37,7 @@ class HTTPHandler: ChannelInboundHandler {
             var buffer: ByteBuffer
             
             if let routerHandler = router.routingTable[request.uri] {
-                let responseBody = routerHandler()
+                let responseBody = routerHandler.respond()
                 
                 buffer = ctx.channel.allocator.buffer(capacity: responseBody.lengthOfBytes(using: String.Encoding.utf8))
                 buffer.write(string: responseBody)

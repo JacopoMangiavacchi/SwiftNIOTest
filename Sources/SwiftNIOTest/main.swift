@@ -22,13 +22,11 @@ let users = [User(firstName: "John", lastName: "Doe", id: 1),
 let router = HTTPRouter()
 
 router.get("/users") {
-    let data = try! JSONEncoder().encode(users)
-    return String(data: data, encoding: .utf8)!
+    return users
 }
 
 router.get("/user:1") {
-    let data = try! JSONEncoder().encode(users[0])
-    return String(data: data, encoding: .utf8)!
+    return users[0]
 }
 
 let server = HTTPServer(host: "::1", port: 8888, with: router)
