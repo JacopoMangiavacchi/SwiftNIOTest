@@ -40,7 +40,7 @@ class HTTPServer {
                 // Set the handlers that are applied to the accepted Channels
                 .childChannelInitializer { channel in
                     channel.pipeline.addHTTPServerHandlers().then {
-                        channel.pipeline.add(handler: HTTPHandler(fileIO: self.fileIO))
+                        channel.pipeline.add(handler: HTTPHandler(fileIO: self.fileIO, router: self.router))
                     }
                 }
                 

@@ -7,15 +7,10 @@
 
 import Foundation
 
-enum RequestError : Error {
-    //add errors
-}
-
-
 class HTTPRouter {
-    typealias CodableArrayClosure<T> = (([T]?, RequestError?) -> Void ) -> Void
+    var routingTable = [String : () -> String]()
     
-    func get<T: Codable>(_ route: String, handler: @escaping CodableArrayClosure<T>) {
-        
+    func get(_ route: String, handler: @escaping () -> String) {
+        routingTable[route] = handler
     }
 }

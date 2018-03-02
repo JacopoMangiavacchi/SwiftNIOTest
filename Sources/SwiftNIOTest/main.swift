@@ -16,12 +16,19 @@ struct User : Codable {
     let id: Int
 }
 
+let users = [User(firstName: "John", lastName: "Doe", id: 1),
+             User(firstName: "Jane", lastName: "Doe", id: 2)]
 
 let router = HTTPRouter()
 
-router.get("/api") { (respondWith: ([User]?, RequestError?) -> Void) in
-    let users = [User(firstName: "John", lastName: "Doe", id: 1)]
-    respondWith(users, nil)
+router.get("/users") {
+    let data = try! JSONEncoder().encode(users)
+    return String(data: data, encoding: .utf8)!
+}
+
+router.get("/user:1") {
+    let data = try! JSONEncoder().encode(users[0])
+    return String(data: data, encoding: .utf8)!
 }
 
 let server = HTTPServer(host: "::1", port: 8888, with: router)
