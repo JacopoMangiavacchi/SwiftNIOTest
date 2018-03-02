@@ -9,7 +9,7 @@ import Foundation
 import NIO
 import NIOHTTP1
 
-class HTTPHandler: ChannelInboundHandler {
+public class Handler: ChannelInboundHandler {
     private enum FileIOMethod {
         case sendfile
         case nonblockingFileIO
@@ -21,14 +21,14 @@ class HTTPHandler: ChannelInboundHandler {
     private var keepAlive = false
     
     private let fileIO: NonBlockingFileIO
-    private let router: HTTPRouter
+    private let router: Router
     
-    public init(fileIO: NonBlockingFileIO, router: HTTPRouter) {
+    public init(fileIO: NonBlockingFileIO, router: Router) {
         self.fileIO = fileIO
         self.router = router
     }
     
-    func channelRead(ctx: ChannelHandlerContext, data: NIOAny) {
+    public func channelRead(ctx: ChannelHandlerContext, data: NIOAny) {
         let reqPart = self.unwrapInboundIn(data)
         
         switch reqPart {
@@ -67,7 +67,7 @@ class HTTPHandler: ChannelInboundHandler {
         }
     }
     
-    func channelReadComplete(ctx: ChannelHandlerContext) {
+    public func channelReadComplete(ctx: ChannelHandlerContext) {
         ctx.flush()
     }
 }

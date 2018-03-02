@@ -11,7 +11,7 @@ public protocol Responder {
     func respond() -> String
 }
 
-public struct RouteResponder<T>: Responder where T: Encodable
+public struct RouterResponder<T>: Responder where T: Encodable
 {
     public typealias Handler = () -> T
     
@@ -31,13 +31,10 @@ public struct RouteResponder<T>: Responder where T: Encodable
     }
 }
 
-
-
-class HTTPRouter {
+public class Router {
     var routingTable = [String : Responder]()
     
     func get<T: Encodable>(_ route: String, handler: @escaping () -> T) {
-        let rr = RouteResponder<T>(handler: handler)
-        routingTable[route] = rr
+        routingTable[route] = RouterResponder<T>(handler: handler)
     }
 }

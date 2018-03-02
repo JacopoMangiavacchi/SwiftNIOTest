@@ -6,9 +6,6 @@
 //
 
 import Foundation
-import NIO
-import NIOHTTP1
-
 
 struct User : Codable {
     let firstName: String
@@ -19,17 +16,17 @@ struct User : Codable {
 let users = [User(firstName: "John", lastName: "Doe", id: 1),
              User(firstName: "Jane", lastName: "Doe", id: 2)]
 
-let router = HTTPRouter()
+let router = Router()
 
 router.get("/users") {
     return users
 }
 
-router.get("/user:1") {
+router.get("/user/0") {
     return users[0]
 }
 
-let server = HTTPServer(host: "::1", port: 8888, with: router)
+let server = Server(host: "::1", port: 8888, with: router)
 
 server.run()
 

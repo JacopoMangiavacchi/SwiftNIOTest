@@ -9,15 +9,15 @@ import Foundation
 import NIO
 import NIOHTTP1
 
-class HTTPServer {
+public class Server {
     var host: String
     var port: Int
     var group: MultiThreadedEventLoopGroup
     var threadPool: BlockingIOThreadPool
     var fileIO: NonBlockingFileIO
-    var router: HTTPRouter
+    var router: Router
 
-    init(host: String, port: Int, with router: HTTPRouter, eventLoopThreads: Int = 1, poolThreads: Int = 6) {
+    init(host: String, port: Int, with router: Router, eventLoopThreads: Int = 1, poolThreads: Int = 6) {
         self.host = host
         self.port = port
         self.router = router
@@ -40,7 +40,7 @@ class HTTPServer {
                 // Set the handlers that are applied to the accepted Channels
                 .childChannelInitializer { channel in
                     channel.pipeline.addHTTPServerHandlers().then {
-                        channel.pipeline.add(handler: HTTPHandler(fileIO: self.fileIO, router: self.router))
+                        channel.pipeline.add(handler: Handler(fileIO: self.fileIO, router: self.router))
                     }
                 }
                 
