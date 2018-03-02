@@ -15,10 +15,12 @@ class HTTPServer {
     var group: MultiThreadedEventLoopGroup
     var threadPool: BlockingIOThreadPool
     var fileIO: NonBlockingFileIO
+    var router: HTTPRouter
 
-    init(host: String, port: Int, eventLoopThreads: Int = 1, poolThreads: Int = 6) {
+    init(host: String, port: Int, with router: HTTPRouter, eventLoopThreads: Int = 1, poolThreads: Int = 6) {
         self.host = host
         self.port = port
+        self.router = router
         
         group = MultiThreadedEventLoopGroup(numThreads: eventLoopThreads)
         threadPool = BlockingIOThreadPool(numberOfThreads: poolThreads)
@@ -28,7 +30,7 @@ class HTTPServer {
     }
     
     
-    func start() {
+    func run() {
         do {
             let bootstrap = ServerBootstrap(group: group)
                 // Specify backlog and enable SO_REUSEADDR for the server itself

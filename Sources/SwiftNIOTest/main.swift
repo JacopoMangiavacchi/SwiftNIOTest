@@ -10,9 +10,23 @@ import NIO
 import NIOHTTP1
 
 
-let server = HTTPServer(host: "::1", port: 8888)
+struct User : Codable {
+    let firstName: String
+    let lastName: String
+    let id: Int
+}
 
-server.start()
+
+let router = HTTPRouter()
+
+router.get("/api") { (respondWith: ([User]?, RequestError?) -> Void) in
+    let users = [User(firstName: "John", lastName: "Doe", id: 1)]
+    respondWith(users, nil)
+}
+
+let server = HTTPServer(host: "::1", port: 8888, with: router)
+
+server.run()
 
 print("Server closed")
 
